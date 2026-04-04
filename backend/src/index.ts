@@ -8,6 +8,7 @@ import wubbleRouter from './routes/wubble.js';
 export type Env = {
   DB: D1Database;
   GEMINI_API_KEY: string;
+  WUBBLE_API_KEY: string;
 };
 
 const app = new Hono<{ Bindings: Env }>();
