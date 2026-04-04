@@ -1,113 +1,239 @@
 @import "tailwindcss";
 
+/* ── Sonic Industrialist — design tokens ──────────────────── */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --accent: #CCFF00;
+  --on-accent: #000000;
+  --secondary: #b50058;
+  --on-secondary: #ffffff;
+  --surface: #f6f6f6;
+  --surface-low: #f0f1f1;
+  --surface-high: #dbdddd;
+  --surface-card: #ffffff;
+  --fg: #000000;
+  --fg-muted: rgba(0, 0, 0, 0.45);
+  --border: 4px solid #000;
+  --shadow-sm: 4px 4px 0px #000;
+  --shadow-md: 8px 8px 0px #000;
+  --shadow-lg: 12px 12px 0px #000;
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+/* ── Base resets ──────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--surface);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+#root {
+  min-height: 100%;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+/* ── Material Symbols ─────────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+  pointer-events: none;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-brutal {
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  user-select: none;
+  cursor: pointer;
+  transition: box-shadow 0.08s ease, transform 0.08s ease;
   display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@media (hover: hover) {
+  .btn-brutal:hover {
+    box-shadow: var(--shadow-md);
+    transform: translate(-2px, -2px);
+  }
+}
+
+.btn-brutal:active {
+  box-shadow: 0px 0px 0px #000 !important;
+  transform: translate(4px, 4px) !important;
+}
+
+.btn-brutal:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Ghost variant — white bg, hover inverts to black/lime */
+.btn-ghost {
+  border: var(--border);
+  box-shadow: none;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  user-select: none;
+  cursor: pointer;
+  background-color: var(--surface-card);
+  color: var(--fg);
+  transition: background-color 0.08s ease, color 0.08s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+}
+
+@media (hover: hover) {
+  .btn-ghost:hover {
+    background-color: var(--fg);
+    color: var(--accent);
+  }
+}
+
+.btn-ghost:active {
+  background-color: var(--fg);
+  color: var(--accent);
+}
+
+/* Destructive variant — secondary (pink) bg */
+.btn-destructive {
+  background-color: var(--secondary);
+  color: var(--on-secondary);
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  user-select: none;
+  cursor: pointer;
+  transition: box-shadow 0.08s ease, transform 0.08s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+}
+
+@media (hover: hover) {
+  .btn-destructive:hover {
+    box-shadow: var(--shadow-md);
+    transform: translate(-2px, -2px);
+  }
+}
+
+.btn-destructive:active {
+  box-shadow: 0px 0px 0px #000 !important;
+  transform: translate(4px, 4px) !important;
+}
+
+/* ── Cards ────────────────────────────────────────────────── */
+.card-brutal {
+  border: var(--border);
+  box-shadow: var(--shadow-md);
+  background-color: var(--surface-card);
+  transition: box-shadow 0.08s ease;
+}
+
+@media (hover: hover) {
+  .card-brutal:hover {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* ── Inputs ───────────────────────────────────────────────── */
+.input-brutal {
+  border: var(--border);
+  background-color: var(--surface-card);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  width: 100%;
+  transition: background-color 0.08s ease;
+  text-transform: uppercase;
+}
+
+.input-brutal::placeholder {
+  opacity: 0.3;
+}
+
+.input-brutal:focus {
+  background-color: var(--accent);
+}
+
+/* ── Chips / Tags ─────────────────────────────────────────── */
+.chip {
+  border: 2px solid #000;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+/* Block type chip colours */
+.chip-verse   { background-color: #C7B8EA; color: #000; }
+.chip-hook    { background-color: #CCFF00; color: #000; }
+.chip-chorus  { background-color: #FFD93D; color: #000; }
+.chip-bridge  { background-color: #4ECDC4; color: #000; }
+.chip-outro   { background-color: #dbdddd; color: #000; }
+.chip-refrain { background-color: #C7B8EA; color: #000; }
+.chip-pre-chorus { background-color: #FFD93D; color: #000; }
+.chip-intro   { background-color: #A8E6CF; color: #000; }
+.chip-interlude { background-color: #81ECEC; color: #000; }
+
+/* ── Status bar ───────────────────────────────────────────── */
+.status-bar {
+  background-color: var(--accent);
+  border-top: var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.375rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  user-select: none;
+}
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background-color: var(--accent);
+  color: var(--on-accent);
 }
