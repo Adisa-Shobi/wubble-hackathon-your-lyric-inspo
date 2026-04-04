@@ -1,9 +1,9 @@
 import { Hono } from 'hono';
-import type { Env } from '../index.js';
+import type { Env, Variables } from '../index.js';
 
 const WUBBLE_BASE = 'https://api.wubble.ai/api/v1';
 
-const wubbleRouter = new Hono<{ Bindings: Env }>();
+const wubbleRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 wubbleRouter.post('/chat', async (c) => {
   const { prompt, vocals = true } = await c.req.json();

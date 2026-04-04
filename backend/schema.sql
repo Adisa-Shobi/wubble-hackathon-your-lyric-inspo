@@ -1,19 +1,8 @@
-CREATE TABLE IF NOT EXISTS projects (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  audio_url TEXT,
-  wubble_project_id TEXT,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS blocks (
-  id TEXT PRIMARY KEY,
-  project_id TEXT NOT NULL,
-  type TEXT NOT NULL,
-  content TEXT NOT NULL,
-  sequence INTEGER NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+-- Tracks per-device usage per endpoint per hour for rate limiting and quotas
+CREATE TABLE IF NOT EXISTS device_usage (
+  device_id TEXT NOT NULL,
+  endpoint TEXT NOT NULL,   -- 'suggest' | 'analyze' | 'chat'
+  window TEXT NOT NULL,     -- hour bucket: '2026-04-04T18'
+  count INTEGER NOT NULL DEFAULT 1,
+  PRIMARY KEY (device_id, endpoint, window)
 );

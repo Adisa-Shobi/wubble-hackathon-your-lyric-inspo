@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { GoogleGenAI } from '@google/genai';
-import type { Env } from '../index.js';
+import type { Env, Variables } from '../index.js';
 
-const aiRouter = new Hono<{ Bindings: Env }>();
+const aiRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 aiRouter.post('/suggest', async (c) => {
   const { lyrics } = await c.req.json();
