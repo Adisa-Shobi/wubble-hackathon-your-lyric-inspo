@@ -70,6 +70,7 @@ export function createProject(title: string): Project {
     id: uuid(),
     title,
     blocks: [],
+    messages: [],
     audioUrl: null,
     wubbleProjectId: null,
     createdAt: now,

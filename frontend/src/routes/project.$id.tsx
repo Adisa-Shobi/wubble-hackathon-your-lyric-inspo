@@ -2,8 +2,10 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useMemo, useCallback } from 'react'
 import * as storage from '../lib/storage'
 import { getLyricsString } from '../lib/utils'
-import type { Block, Project } from '../types'
+import type { Project } from '../types'
 import BlockEditor from '../components/BlockEditor'
+import WubbleChat from '../components/WubbleChat'
+import AudioPlayer from '../components/AudioPlayer'
 
 export const Route = createFileRoute('/project/$id')({
   component: Editor,
@@ -29,19 +31,9 @@ function Editor() {
     setProject(updated)
   }, [])
 
-  function handleTitleChange(title: string) {
+  function update<K extends keyof Project>(key: K, value: Project[K]) {
     if (!project) return
-    save({ ...project, title })
-  }
-
-  function handleBlocksChange(blocks: Block[]) {
-    if (!project) return
-    save({ ...project, blocks })
-  }
-
-  function handleAudioUrl(audioUrl: string) {
-    if (!project) return
-    save({ ...project, audioUrl })
+    save({ ...project, [key]: value })
   }
 
   // ── Not found ─────────────────────────────────────────────
@@ -101,7 +93,7 @@ function Editor() {
             value={project.title}
             autoFocus
             spellCheck={false}
-            onChange={(e) => handleTitleChange(e.target.value)}
+            onChange={(e) => update('title', e.target.value)}
             onBlur={() => setEditingTitle(false)}
             onKeyDown={(e) => e.key === 'Enter' && setEditingTitle(false)}
           />
@@ -156,7 +148,7 @@ function Editor() {
           <div className="flex-1 overflow-hidden">
             <BlockEditor
               blocks={project.blocks}
-              onChange={handleBlocksChange}
+              onChange={(blocks) => update('blocks', blocks)}
             />
           </div>
         </div>
@@ -164,7 +156,7 @@ function Editor() {
         {/* Right — Tools */}
         <div className="flex flex-col overflow-hidden bg-[var(--surface-low)]">
 
-          {/* Top — Wubble Chat (Stage 7) */}
+          {/* Top — Wubble Chat */}
           <div
             className="flex-1 flex flex-col overflow-hidden"
             style={{ borderBottom: 'var(--border)' }}
@@ -180,14 +172,15 @@ function Editor() {
                 Wubble Studio
               </span>
             </div>
-            <div className="flex-1 flex items-center justify-center p-6">
-              <p
-                className="text-xs font-black uppercase opacity-30 text-center"
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                Chat coming in Stage 7
-              </p>
-            </div>
+            <WubbleChat
+              fullLyrics={fullLyrics}
+              initialMessages={project.messages ?? []}
+              wubbleProjectId={project.wubbleProjectId}
+              currentAudioUrl={project.audioUrl ?? null}
+              onMessagesChange={(messages) => update('messages', messages)}
+              onAudioUrl={(audioUrl) => update('audioUrl', audioUrl)}
+              onWubbleProjectId={(wubbleProjectId) => update('wubbleProjectId', wubbleProjectId)}
+            />
           </div>
 
           {/* Bottom — Song Analysis (Stage 8) */}
@@ -216,7 +209,10 @@ function Editor() {
         </div>
       </div>
 
-      {/* ── Status bar (AudioPlayer mounts here in Stage 7) ─── */}
+      {/* ── Audio Player ─────────────────────────────────────── */}
+      {project.audioUrl && <AudioPlayer url={project.audioUrl} />}
+
+      {/* ── Status bar ───────────────────────────────────────── */}
       <div className="status-bar flex-shrink-0">
         <span>LYRIC PAD</span>
         <span style={{ color: 'var(--fg-muted)' }}>—</span>

@@ -5,8 +5,8 @@ import aiRouter from './routes/ai.js';
 import wubbleRouter from './routes/wubble.js';
 import { deviceIdMiddleware } from './middleware.js';
 
+// D1 binding kept in wrangler.jsonc for future use — not yet referenced in code
 export type Env = {
-  DB: D1Database;
   GEMINI_API_KEY: string;
   WUBBLE_API_KEY: string;
 };
@@ -15,16 +15,14 @@ export type Variables = {
   deviceId: string;
 };
 
-const app = new Hono<{ Bindings: Env; Variables: Variables }>();
+// Method chaining is required for Hono RPC to infer AppType correctly
+const app = new Hono<{ Bindings: Env; Variables: Variables }>()
+  .use('/api/*', cors())
+  .use('/api/*', deviceIdMiddleware)
+  .get('/', (c) => c.text('Lyric Pad API is running!'))
+  .route('/api', aiRouter)
+  .route('/api', wubbleRouter);
 
-app.use('/api/*', cors());
-app.use('/api/*', deviceIdMiddleware);
-
-app.get('/', (c) => {
-  return c.text('Lyric Pad API is running!');
-});
-
-app.route('/api', aiRouter);
-app.route('/api', wubbleRouter);
+export type AppType = typeof app;
 
 export default app;

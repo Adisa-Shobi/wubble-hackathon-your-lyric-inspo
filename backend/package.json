@@ -1,6 +1,9 @@
 {
   "name": "backend",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
@@ -8,9 +11,12 @@
   },
   "dependencies": {
     "@google/genai": "^1.48.0",
-    "hono": "^4.12.10"
+    "@hono/zod-validator": "^0.7.6",
+    "hono": "^4.12.10",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "typescript": "^6.0.2",
     "wrangler": "^4.4.0"
   }
 }

@@ -232,6 +232,46 @@ body {
   user-select: none;
 }
 
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+.animate-blink {
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+/* ── Audio scrubber ───────────────────────────────────────── */
+.audio-scrubber {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 0;
+}
+
+.audio-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #000;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+}
+
+.audio-scrubber::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #000;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+}
+
 /* ── Selection ────────────────────────────────────────────── */
 ::selection {
   background-color: var(--accent);

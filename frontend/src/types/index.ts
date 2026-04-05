@@ -1,3 +1,7 @@
+// ── App data model ────────────────────────────────────────────────────────────
+// API response types are inferred from the backend AppType via Hono RPC.
+// Only internal (localStorage) data model types live here.
+
 export type BlockType =
   | 'verse'
   | 'hook'
@@ -18,55 +22,24 @@ export interface Block {
   sequence: number
 }
 
+export interface ChatMessage {
+  id: string
+  role: 'user' | 'assistant'
+  text?: string
+  lyricsIncluded?: boolean
+  status?: 'generating' | 'done' | 'error'
+  modelResponse?: string
+  songTitle?: string
+  audioUrl?: string
+}
+
 export interface Project {
   id: string
   title: string
   blocks: Block[]
+  messages: ChatMessage[]
   audioUrl: string | null
   wubbleProjectId: string | null
   createdAt: number
   updatedAt: number
-}
-
-export interface Suggestion {
-  original: string
-  suggestion: string
-  rationale: string
-}
-
-export interface Analysis {
-  vibe: string
-  impact: string
-  status_quo: string
-}
-
-export interface WubblePollingResponse {
-  request_id: string
-  status: 'processing' | 'generating' | 'completed' | 'error'
-  message?: string
-  results?: {
-    custom_data?: { text: string }
-    streaming: boolean
-  }
-  audio_url?: string | null
-  retry_after?: number
-}
-
-// Raw shapes returned by the backend (before normalization)
-export interface ApiProject {
-  id: string
-  title: string
-  audio_url: string | null
-  wubble_project_id: string | null
-  created_at: string
-  updated_at: string
-  blocks?: ApiBlock[]
-}
-
-export interface ApiBlock {
-  id: string
-  project_id: string
-  type: BlockType
-  content: string
-  sequence: number
 }
