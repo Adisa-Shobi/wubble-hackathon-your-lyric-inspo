@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { z } from 'zod';
-import { wubblePollingSchema } from './schemas.js';
+import type { z } from 'zod';
+import type { wubblePollingSchema } from './schemas.js';
 
 import aiRouter from './routes/ai.js';
 import wubbleRouter from './routes/wubble.js';
