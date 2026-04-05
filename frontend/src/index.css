@@ -241,6 +241,23 @@ body {
   animation: blink 1.4s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--surface-high) 25%, var(--surface-card) 50%, var(--surface-high) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin 1s linear infinite;
+}
+
 /* ── Audio scrubber ───────────────────────────────────────── */
 .audio-scrubber {
   -webkit-appearance: none;

@@ -6,6 +6,8 @@ import type { Project } from '../types'
 import BlockEditor from '../components/BlockEditor'
 import WubbleChat from '../components/WubbleChat'
 import AudioPlayer from '../components/AudioPlayer'
+import SongAnalysisPanel from '../components/SongAnalysisPanel'
+import SuggestionOverlay from '../components/SuggestionOverlay'
 
 export const Route = createFileRoute('/project/$id')({
   component: Editor,
@@ -144,6 +146,13 @@ function Editor() {
             </span>
           </div>
 
+          {/* Suggestions */}
+          <SuggestionOverlay
+            fullLyrics={fullLyrics}
+            blocks={project.blocks}
+            onBlocksChange={(blocks) => update('blocks', blocks)}
+          />
+
           {/* BlockEditor */}
           <div className="flex-1 overflow-hidden">
             <BlockEditor
@@ -183,28 +192,8 @@ function Editor() {
             />
           </div>
 
-          {/* Bottom — Song Analysis (Stage 8) */}
-          <div className="h-64 flex flex-col overflow-hidden">
-            <div
-              className="flex-shrink-0 flex items-center px-5 py-3 bg-[var(--surface-card)]"
-              style={{ borderBottom: 'var(--border)' }}
-            >
-              <span
-                className="text-[10px] font-black uppercase tracking-widest"
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                Song Analysis
-              </span>
-            </div>
-            <div className="flex-1 flex items-center justify-center p-6">
-              <p
-                className="text-xs font-black uppercase opacity-30 text-center"
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                Analysis coming in Stage 8
-              </p>
-            </div>
-          </div>
+          {/* Bottom — Song Analysis */}
+          <SongAnalysisPanel fullLyrics={fullLyrics} />
 
         </div>
       </div>
