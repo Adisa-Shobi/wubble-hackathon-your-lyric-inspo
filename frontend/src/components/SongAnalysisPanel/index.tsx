@@ -127,7 +127,7 @@ function AnalysisCards({ data }: { data: { vibe: string; impact: string; status_
   ]
 
   return (
-    <div className="flex flex-col divide-y divide-black/10">
+    <div className="flex flex-col divide-y divide-black/10 animate-fade-in">
       {cards.map(({ label, value }) => (
         <div key={label} className="px-5 py-3">
           <p

@@ -32,7 +32,7 @@ const wubbleRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
     });
 
     if (!res.ok) {
-      return c.json({ error: 'Wubble chat request failed' }, res.status as 502);
+      return c.json({ error: 'Wubble chat request failed' }, res.status as number);
     }
 
     const data = wubbleChatStartSchema.parse(await res.json());
@@ -46,7 +46,7 @@ const wubbleRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
     });
 
     if (!res.ok) {
-      return c.json({ error: 'Polling request failed' }, res.status as 502);
+      return c.json({ error: 'Polling request failed' }, res.status as number);
     }
 
     const raw = await res.json();

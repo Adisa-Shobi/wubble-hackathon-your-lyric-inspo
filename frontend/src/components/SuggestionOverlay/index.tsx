@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import * as api from '../../lib/api'
 import { queryKeys } from '../../lib/queryKeys'
-import { escapeRegex, getLyricsString } from '../../lib/utils'
+import { escapeRegex } from '../../lib/utils'
 import type { Block } from '../../types'
 
 interface Suggestion {
@@ -21,10 +21,15 @@ export default function SuggestionOverlay({ fullLyrics, blocks, onBlocksChange }
   const [debouncedLyrics, setDebouncedLyrics] = useState('')
   const [dismissed, setDismissed] = useState<Set<string>>(new Set())
   const [openIdx, setOpenIdx] = useState<number | null>(null)
+  const suppressDebounce = useRef(false)
 
   useEffect(() => {
     if (!fullLyrics.trim()) {
       setDebouncedLyrics('')
+      return
+    }
+    if (suppressDebounce.current) {
+      suppressDebounce.current = false
       return
     }
     const t = setTimeout(() => setDebouncedLyrics(fullLyrics), 2_500)
@@ -56,10 +61,8 @@ export default function SuggestionOverlay({ fullLyrics, blocks, onBlocksChange }
       replaced = true
       return { ...block, content: block.content.replace(re, s.suggestion) }
     })
+    suppressDebounce.current = true // block the debounce tick this change will trigger
     onBlocksChange(newBlocks)
-    // Sync debouncedLyrics to the new value immediately so the debounce timer
-    // fires a no-op state update and doesn't trigger a fresh suggestion query.
-    setDebouncedLyrics(getLyricsString(newBlocks))
     dismiss(s.original)
   }
 
@@ -71,7 +74,7 @@ export default function SuggestionOverlay({ fullLyrics, blocks, onBlocksChange }
   const selected = openIdx !== null ? active[openIdx] : null
 
   return (
-    <div className="flex-shrink-0 bg-[var(--surface-card)]" style={{ borderBottom: 'var(--border)' }}>
+    <div className="flex-shrink-0 bg-[var(--surface-card)] animate-fade-in" style={{ borderBottom: 'var(--border)' }}>
 
       {/* Chips row */}
       <div className="flex items-center gap-2 px-4 py-2 flex-wrap">
@@ -97,7 +100,7 @@ export default function SuggestionOverlay({ fullLyrics, blocks, onBlocksChange }
 
       {/* Inline popover */}
       {selected && (
-        <div className="px-4 pb-3 flex flex-col gap-2">
+        <div className="px-4 pb-3 flex flex-col gap-2 animate-fade-in">
           <p
             className="text-xs leading-relaxed"
             style={{ color: 'var(--fg-muted)', fontFamily: 'var(--font-body)' }}

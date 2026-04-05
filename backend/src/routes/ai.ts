@@ -5,6 +5,8 @@ import { GoogleGenAI } from '@google/genai';
 import type { Env, Variables } from '../index.js';
 import { lyricsBodySchema, suggestionSchema, analysisSchema } from '../schemas.js';
 
+const GEMINI_MODEL = 'gemini-2.5-flash';
+
 const aiRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
   .post('/suggest', zValidator('json', lyricsBodySchema), async (c) => {
     const { lyrics } = c.req.valid('json');
@@ -16,7 +18,7 @@ const aiRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
 
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: GEMINI_MODEL,
         contents: prompt,
         config: { responseMimeType: 'application/json' },
       });
@@ -39,7 +41,7 @@ const aiRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
 
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: GEMINI_MODEL,
         contents: prompt,
         config: { responseMimeType: 'application/json' },
       });

@@ -10,6 +10,7 @@ export default function AudioPlayer({ url }: AudioPlayerProps) {
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+  const [loadError, setLoadError] = useState(false)
 
   const isInitialMount = useRef(true)
 
@@ -23,6 +24,7 @@ export default function AudioPlayer({ url }: AudioPlayerProps) {
     setPlaying(false)
     setCurrentTime(0)
     setDuration(0)
+    setLoadError(false)
     audioRef.current?.play().catch(() => {})
   }, [url])
 
@@ -54,43 +56,55 @@ export default function AudioPlayer({ url }: AudioPlayerProps) {
         onEnded={() => setPlaying(false)}
         onTimeUpdate={() => setCurrentTime(audioRef.current?.currentTime ?? 0)}
         onLoadedMetadata={() => setDuration(audioRef.current?.duration ?? 0)}
+        onError={() => { setLoadError(true); setPlaying(false) }}
       />
 
-      <button
-        className="btn-brutal bg-white p-0 flex-shrink-0"
-        style={{ width: '2.25rem', height: '2.25rem' }}
-        onClick={togglePlay}
-        aria-label={playing ? 'Pause' : 'Play'}
-      >
-        <span className="material-symbols-outlined" style={{ fontSize: 18, pointerEvents: 'none' }}>
-          {playing ? 'pause' : 'play_arrow'}
+      {loadError ? (
+        <span
+          className="text-[10px] font-black uppercase tracking-widest"
+          style={{ fontFamily: 'var(--font-mono)', color: 'var(--secondary)' }}
+        >
+          Failed to load audio
         </span>
-      </button>
+      ) : (
+        <>
+          <button
+            className="btn-brutal bg-white p-0 flex-shrink-0"
+            style={{ width: '2.25rem', height: '2.25rem' }}
+            onClick={togglePlay}
+            aria-label={playing ? 'Pause' : 'Play'}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 18, pointerEvents: 'none' }}>
+              {playing ? 'pause' : 'play_arrow'}
+            </span>
+          </button>
 
-      <span
-        className="flex-shrink-0 text-[10px] font-black tabular-nums"
-        style={{ fontFamily: 'var(--font-mono)' }}
-      >
-        {formatTime(currentTime)}
-      </span>
+          <span
+            className="flex-shrink-0 text-[10px] font-black tabular-nums"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            {formatTime(currentTime)}
+          </span>
 
-      <input
-        type="range"
-        className="audio-scrubber flex-1 min-w-0"
-        min={0}
-        max={duration || 1}
-        step={0.1}
-        value={currentTime}
-        onChange={handleSeek}
-        aria-label="Seek"
-      />
+          <input
+            type="range"
+            className="audio-scrubber flex-1 min-w-0"
+            min={0}
+            max={duration || 1}
+            step={0.1}
+            value={currentTime}
+            onChange={handleSeek}
+            aria-label="Seek"
+          />
 
-      <span
-        className="flex-shrink-0 text-[10px] font-black tabular-nums"
-        style={{ fontFamily: 'var(--font-mono)', color: 'rgba(0,0,0,0.5)' }}
-      >
-        {formatTime(duration)}
-      </span>
+          <span
+            className="flex-shrink-0 text-[10px] font-black tabular-nums"
+            style={{ fontFamily: 'var(--font-mono)', color: 'rgba(0,0,0,0.5)' }}
+          >
+            {formatTime(duration)}
+          </span>
+        </>
+      )}
 
       <span
         className="text-[10px] font-black uppercase tracking-widest ml-auto"
