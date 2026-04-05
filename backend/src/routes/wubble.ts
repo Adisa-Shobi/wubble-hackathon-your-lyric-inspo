@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import type { ContentfulStatusCode } from 'hono/utils/http-status';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import type { Env, Variables } from '../index.js';
@@ -32,7 +33,7 @@ const wubbleRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
     });
 
     if (!res.ok) {
-      return c.json({ error: 'Wubble chat request failed' }, res.status as number);
+      return c.json({ error: 'Wubble chat request failed' }, res.status as ContentfulStatusCode);
     }
 
     const data = wubbleChatStartSchema.parse(await res.json());
@@ -46,12 +47,13 @@ const wubbleRouter = new Hono<{ Bindings: Env; Variables: Variables }>()
     });
 
     if (!res.ok) {
-      return c.json({ error: 'Polling request failed' }, res.status as number);
+      return c.json({ error: 'Polling request failed' }, res.status as ContentfulStatusCode);
     }
 
     const raw = await res.json();
     const parsed = wubblePollingSchema.safeParse(raw);
-    return c.json(parsed.success ? parsed.data : raw);
+    const data = parsed.success ? parsed.data : (raw as z.infer<typeof wubblePollingSchema>);
+    return c.json(data);
   });
 
 export default wubbleRouter;

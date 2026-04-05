@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "lyric-inspo-backend",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
@@ -16,6 +16,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260405.1",
     "typescript": "^6.0.2",
     "wrangler": "^4.4.0"
   }

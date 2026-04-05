@@ -1,4 +1,5 @@
 import { client } from './client'
+import type { PollResponse } from 'backend'
 
 export async function fetchSuggestions(lyrics: string) {
   const res = await client.api.suggest.$post({ json: { lyrics } })
@@ -21,7 +22,7 @@ export async function startWubbleChat(
     json: { message, lyrics, project_id: projectId },
   })
   if (!res.ok) throw new Error('Failed to start Wubble chat')
-  return res.json()
+  return res.json() as Promise<{ request_id: string; project_id: string }>
 }
 
 export async function pollWubble(requestId: string) {
@@ -29,5 +30,5 @@ export async function pollWubble(requestId: string) {
     param: { request_id: requestId },
   })
   if (!res.ok) throw new Error('Polling failed')
-  return res.json()
+  return res.json() as Promise<PollResponse>
 }

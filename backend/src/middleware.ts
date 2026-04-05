@@ -43,7 +43,7 @@ export async function rateLimitMiddleware(
 
   if (entry.count >= max) {
     const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
-    return c.json({ error: 'Rate limit exceeded' }, 429 as number, {
+    return c.json({ error: 'Rate limit exceeded' }, 429, {
       'Retry-After': String(retryAfter),
     });
   }

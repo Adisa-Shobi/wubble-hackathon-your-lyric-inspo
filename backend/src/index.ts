@@ -1,5 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { z } from 'zod';
+import { wubblePollingSchema } from './schemas.js';
 
 import aiRouter from './routes/ai.js';
 import wubbleRouter from './routes/wubble.js';
@@ -28,5 +30,6 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>()
   .route('/api', wubbleRouter);
 
 export type AppType = typeof app;
+export type PollResponse = z.infer<typeof wubblePollingSchema>;
 
 export default app;
