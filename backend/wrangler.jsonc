@@ -9,12 +9,15 @@
   // "vars": {
   //   "MY_VAR": "my-variable"
   // },
-  // "kv_namespaces": [
-  //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  //   }
-  // ],
+  // Run: wrangler kv namespace create RATE_LIMIT
+  // then paste the returned id and preview_id below.
+  "kv_namespaces": [
+    {
+      "binding": "RATE_LIMIT_KV",
+      "id": "ebe6916c8c86404dbdf73ae60d1598b0",
+      "preview_id": "b5a321ce826143e5b7f1100f6cd5cd8d"
+    }
+  ],
   // "r2_buckets": [
   //   {
   //     "binding": "MY_BUCKET",

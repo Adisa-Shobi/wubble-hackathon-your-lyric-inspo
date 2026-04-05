@@ -1,3 +1,4 @@
 node_modules/
 plan/
 .claude
+.DS_Store
