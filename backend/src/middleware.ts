@@ -49,7 +49,7 @@ export async function rateLimitMiddleware(
   }
 
   entry.count++;
-  const ttl = Math.ceil((entry.resetAt - now) / 1000);
+  const ttl = Math.max(60, Math.ceil((entry.resetAt - now) / 1000));
   await c.env.RATE_LIMIT_KV.put(kvKey, JSON.stringify(entry), { expirationTtl: ttl });
 
   return next();

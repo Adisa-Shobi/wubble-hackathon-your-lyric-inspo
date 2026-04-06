@@ -11,7 +11,8 @@
     "types": ["@cloudflare/workers-types"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "composite": true
+    "composite": true,
+    "outDir": "dist"
   },
   "include": ["src"]
 }
