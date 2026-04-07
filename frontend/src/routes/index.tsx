@@ -81,11 +81,11 @@ function Dashboard() {
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <header
-        className="fixed top-0 w-full z-50 h-20 bg-white flex items-center justify-between px-8"
+        className="fixed top-0 w-full z-50 h-20 bg-white flex items-center justify-between px-4 md:px-8"
         style={{ borderBottom: 'var(--border)' }}
       >
         <h1
-          className="text-2xl tracking-tighter uppercase italic"
+          className="text-xl md:text-2xl tracking-tighter uppercase italic"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Lyric Pad
@@ -102,7 +102,7 @@ function Dashboard() {
 
       {/* ── Sidebar ────────────────────────────────────────────── */}
       <aside
-        className="fixed left-0 top-20 h-[calc(100vh-80px)] w-72 bg-[var(--surface-low)] z-40 flex flex-col p-6"
+        className="hidden md:flex fixed left-0 top-20 h-[calc(100vh-80px)] w-72 bg-[var(--surface-low)] z-40 flex-col p-6"
         style={{ borderRight: 'var(--border)' }}
       >
         <div className="flex items-center gap-4 mb-8">
@@ -146,13 +146,13 @@ function Dashboard() {
       </aside>
 
       {/* ── Main ───────────────────────────────────────────────── */}
-      <main className="ml-72 pt-32 pb-24 px-12 min-h-screen">
+      <main className="ml-0 md:ml-72 pt-24 md:pt-32 pb-24 px-4 md:px-12 min-h-screen">
 
         {/* Page title + sort */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-16">
           <div>
             <h2
-              className="text-6xl tracking-tighter uppercase mb-2"
+              className="text-4xl md:text-6xl tracking-tighter uppercase mb-2"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Projects

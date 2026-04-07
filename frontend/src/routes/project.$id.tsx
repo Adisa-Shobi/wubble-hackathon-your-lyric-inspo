@@ -21,6 +21,7 @@ function Editor() {
 
   const [project, setProject] = useState<Project | null>(() => storage.getProject(id))
   const [editingTitle, setEditingTitle] = useState(false)
+  const [mobileTab, setMobileTab] = useState<'editor' | 'tools'>('editor')
 
   const fullLyrics = useMemo(
     () => getLyricsString(project?.blocks ?? []),
@@ -41,7 +42,7 @@ function Editor() {
   // ── Not found ─────────────────────────────────────────────
   if (!project) {
     return (
-      <div className="min-h-screen bg-[var(--surface)] flex flex-col items-start justify-center px-16">
+      <div className="min-h-screen bg-[var(--surface)] flex flex-col items-start justify-center px-6 md:px-16">
         <h1
           className="text-6xl uppercase tracking-tighter mb-4"
           style={{ fontFamily: 'var(--font-display)' }}
@@ -66,7 +67,7 @@ function Editor() {
 
       {/* ── Header ───────────────────────────────────────────── */}
       <header
-        className="flex-shrink-0 h-16 bg-[var(--surface-card)] flex items-center gap-4 px-6"
+        className="flex-shrink-0 h-16 bg-[var(--surface-card)] flex items-center gap-2 md:gap-4 px-3 md:px-6"
         style={{ borderBottom: 'var(--border)' }}
       >
         {/* Back */}
@@ -79,9 +80,7 @@ function Editor() {
           <span className="material-symbols-outlined" style={{ fontSize: 20 }}>arrow_back</span>
         </button>
 
-        <div
-          className="w-px h-6 bg-black opacity-20 flex-shrink-0"
-        />
+        <div className="w-px h-6 bg-black opacity-20 flex-shrink-0" />
 
         {/* Title — click to edit */}
         {editingTitle ? (
@@ -110,21 +109,46 @@ function Editor() {
           </button>
         )}
 
-        {/* Saved indicator */}
+        {/* Saved indicator — hidden on mobile */}
         <span
-          className="flex-shrink-0 text-[10px] font-black uppercase tracking-widest"
+          className="hidden md:block flex-shrink-0 text-[10px] font-black uppercase tracking-widest"
           style={{ color: 'var(--fg-muted)', fontFamily: 'var(--font-mono)' }}
         >
           ● SAVED
         </span>
+
+        {/* Mobile tab switcher */}
+        <div className="md:hidden flex-shrink-0 flex" style={{ border: 'var(--border)' }}>
+          <button
+            className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-colors"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              backgroundColor: mobileTab === 'editor' ? 'var(--accent)' : 'var(--surface-card)',
+              borderRight: 'var(--border)',
+            }}
+            onClick={() => setMobileTab('editor')}
+          >
+            Edit
+          </button>
+          <button
+            className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-colors"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              backgroundColor: mobileTab === 'tools' ? 'var(--accent)' : 'var(--surface-card)',
+            }}
+            onClick={() => setMobileTab('tools')}
+          >
+            Studio
+          </button>
+        </div>
       </header>
 
       {/* ── Body ─────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-hidden grid grid-cols-[1fr_380px]">
+      <div className="flex flex-col flex-1 overflow-hidden md:grid md:grid-cols-[1fr_380px]">
 
         {/* Left — Lyric pad */}
         <div
-          className="flex flex-col overflow-hidden"
+          className={`flex flex-col overflow-hidden flex-1 ${mobileTab === 'tools' ? 'hidden md:flex' : ''}`}
           style={{ borderRight: 'var(--border)' }}
         >
           {/* Panel label */}
@@ -163,7 +187,7 @@ function Editor() {
         </div>
 
         {/* Right — Tools */}
-        <div className="flex flex-col overflow-hidden bg-[var(--surface-low)]">
+        <div className={`flex flex-col overflow-hidden bg-[var(--surface-low)] flex-1 ${mobileTab === 'editor' ? 'hidden md:flex' : ''}`}>
 
           {/* Top — Wubble Chat */}
           <div
@@ -204,12 +228,12 @@ function Editor() {
       {/* ── Status bar ───────────────────────────────────────── */}
       <div className="status-bar flex-shrink-0">
         <span>LYRIC PAD</span>
-        <span style={{ color: 'var(--fg-muted)' }}>—</span>
-        <span>{project.title}</span>
-        <span style={{ color: 'var(--fg-muted)' }}>—</span>
+        <span className="hidden md:inline" style={{ color: 'var(--fg-muted)' }}>—</span>
+        <span className="hidden md:inline">{project.title}</span>
+        <span className="hidden md:inline" style={{ color: 'var(--fg-muted)' }}>—</span>
         <span>{project.blocks.length} BLOCKS</span>
-        <span style={{ color: 'var(--fg-muted)' }}>—</span>
-        <span>{fullLyrics.split(/\s+/).filter(Boolean).length} WORDS</span>
+        <span className="hidden md:inline" style={{ color: 'var(--fg-muted)' }}>—</span>
+        <span className="hidden md:inline">{fullLyrics.split(/\s+/).filter(Boolean).length} WORDS</span>
         <span className="ml-auto" style={{ color: 'var(--fg-muted)' }}>
           {new Date(project.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
